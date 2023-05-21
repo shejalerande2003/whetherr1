@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="card">
+        <div class="search">
+
+<input type="text" placeholder="eg. Mumbai" spellcheck="false">
+<button><img src="search.png" ></button>
+        </div>
+        <div class="weather">
+       <img src="clear.png" class="weather-icon">
+       <h2 class="city">Pune</h2> 
+       <h1 class="temp">41°C</h1>
+     <div class="details">
+     <div class="col">
+<img src="humidity.png">
+<div class="container">
+    <div class="display-date">
+      <span id="day">day</span>,
+      <span id="daynum">00</span>
+      <span id="month">month</span>
+      <span id="year">0000</span>
+    </div>
+    <div class="display-time"></div>
+  </div>
+<div class="humiClass">
+    <p class="humidity">70%</p>
+    <p class="humidityPara">Humidity</p>
+</div>
+        </div>
+        <div class="col">
+            <img src="wind.png" >
+            <div>
+                <p class="wind">15 km/h</p>
+                <p>Wind Speed</p>
+            </div>
+             </div>
+        </div>
+        </div>
+        </div>
+
+        <script>
+
+         const apiKey = "29bdd96da3f96aa4a9eafefa8afff0fb";
+         const apiUrl =  "https://api.openweathermap.org/data/2.5/weather?&units=metric&q=";
+         const searchBox =document.querySelector(".search input");
+         const searchBtn =document.querySelector(".search button");
+        
+
+          async function checkWeather(city){
+          const response = await fetch(apiUrl + city + `&appid=${apiKey}`);
+          var data = await response.json();
+          console.log(data); 
+
+          document.querySelector(".city").innerHTML = data.name;
+          document.querySelector(".temp").innerHTML = Math.round(data.main.temp)  + "°C";
+          document.querySelector(".humidity").innerHTML = data.main.humidity + "%";
+          document.querySelector(".wind").innerHTML = Math.round(data.wind.speed ) + " km/h";
+
+        let year = dateArg.getFullYear();
+        let month = months[dateArg.getMonth()];
+        let date = dateArg.getDate();
+        let day = days[dateArg.getDay()];
+        console.log(year);
+         
+          }
+          searchBtn.addEventListener("click", ()=>{
+            checkWeather(searchBox.value);
+          })
+          const displayTime = document.querySelector(".display-time");
+// Time
+function showTime() {
+  let time = new Date();
+  displayTime.innerText = time.toLocaleTimeString("en-US", { hour12: false });
+  setTimeout(showTime, 1000);
+}
+
+showTime();
+
+// Date
+function updateDate() {
+  let today = new Date();
+
+  // return number
+  let dayName = today.getDay(),
+    dayNum = today.getDate(),
+    month = today.getMonth(),
+    year = today.getFullYear();
+
+  const months = ["January","February","March","April","May","June","July","August","September","October","November","December",];
+  const dayWeek = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday",];
+  // value -> ID of the html element
+  const IDCollection = ["day", "daynum", "month", "year"];
+  // return value array with number as a index
+  const val = [dayWeek[dayName], dayNum, months[month], year];
+  for (let i = 0; i < IDCollection.length; i++) {
+    document.getElementById(IDCollection[i]).firstChild.nodeValue = val[i];
+  }
+}
+
+updateDate();
+
+          
+        </script>
+</body>
+</html>
